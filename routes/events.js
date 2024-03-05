@@ -6,6 +6,7 @@ const eventsController = new EventsController();
 
 router.use(express.urlencoded({ extended: false}));
 
-router.get('/', eventsController.greet);
+router.get('/', eventsController.showAll);
+router.get('/:id', eventsController.showById)
 
 module.exports = router;

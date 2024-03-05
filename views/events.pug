@@ -1,0 +1,7 @@
+extends layout 
+
+block content
+  h1.text-center Upcoming events
+  ul.display-flex
+    each event in events 
+      li=event.venue

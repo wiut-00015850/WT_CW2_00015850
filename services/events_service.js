@@ -2,9 +2,21 @@
 const fs = require('fs');
 
 class EventsService {
+  constructor() {
+    this.events = [];
 
-  sayHello() {
-    return "saying hello from eventsService";
+    fs.readFile('./data/events.json', (err, data) => {
+      err ? console.error("Couldn't load events data")
+          : this.events = JSON.parse(data);
+    })
+  }
+
+  getAll() {
+    return this.events;
+  }
+
+  getById(id) {
+    return this.events.find((event) => event.id == id);
   }
 }
 
