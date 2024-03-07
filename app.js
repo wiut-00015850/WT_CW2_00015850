@@ -1,5 +1,5 @@
 const express = require('express');
-const eventsRoute = require('./routes/events');
+const eventsRoute = require('./routes/events_route');
 const app = express();
 const port = 3000;
 
@@ -8,9 +8,6 @@ app.set ('view engine', 'pug');
 
 // for urls that relate to events, use events.js to handle them
 app.use('/events', eventsRoute);
-
-// to get body elements from the user's request 
-app.use(express.urlencoded({ extended: false}));
 
 // use static format (not dynamic) with public folder
 app.use('/static', express.static('./public'));

@@ -2,6 +2,15 @@ extends layout
 
 block content
   h1.text-center Upcoming events
+  - if (additionalInfo === 'deleted')
+    .alert.alert-danger The event was deleted
+  - else if (additionalInfo === 'joined')
+    .alert.alert-primary You successfully joined the event
+  - else if (additionalInfo === 'created')
+    .alert.alert-primary The new event was created
+  - else if (additionalInfo === 'updated')
+    .alert.alert-warning The event was updated
   ul.display-flex
     each event in events 
-      li=event.venue
+      li
+        a(href=`events/${event.id}`)=event.title

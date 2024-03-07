@@ -1,4 +1,29 @@
 extends layout
-  
-block content 
-  h3.bg-blue=event.id + ' ' + event.venue
+
+block content
+  - if (forCreate)
+    h2 Create a new event
+  - else
+    h2 More info on event
+  - const isAdmin = true;
+    .form-floating.mb-3
+      input.form-control(id='id' placeholder='777' for="id" value=event.id required disabled=true)
+      label(for='id') Event #
+    .form-floating.mb-3
+      input.form-control(id='title' placeholder='My very cool event' for="title" value=event.title required disabled=isAdmin ? false : true)
+      label(for='title') Event title
+    .form-floating.mb-3
+      input.form-control(id='venue' placeholder='Tashkent, Uzbekistan' for="venue" value=event.venue required disabled=isAdmin ? false : true)
+      label(for='venue') Event venue
+    .form-floating.mb-3
+      input.form-control(type="datetime-local" id='date' placeholder='My very cool event' for="date" value=event.date required disabled=isAdmin ? false : true)
+      label(for='date') Event date
+    input.d-none(type="checkbox" id="forCreate" disabled=true value=(forCreate ? 'true' : ''))
+  - if (isAdmin)
+    button#saveBtn.btn.btn-primary Save
+    -if (!forCreate)
+      button#deleteBtn.btn.btn-danger Delete
+  - else 
+    button.btn.btn-primary Join this event
+
+  script(src="/static/js/event_edit.js")
