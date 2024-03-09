@@ -3,11 +3,27 @@ const eventsService = new EventsService();
 
 class EventsController {
 
-  // method to display a page with all events
-  showAll(req, res) {
+  // method to display a page with upcoming events
+  showUpcoming = (req, res) => {
+    // if user searched for value, go different route
+    const searchValue = req.query.search;
+    if (searchValue)
+      return this.showSearchResult(searchValue, res);
     const additionalInfo = Object.keys(req.query)[0];
-    const events = eventsService.getAll();
+    const events = eventsService.getUpcomingEvents();
     res.render('events', { events, additionalInfo });
+  }
+
+  // show events that passed some time ago
+  showPassed(req, res) {
+    const events = eventsService.getPassedEvents();
+    res.render('events', { events, passed: true })
+  }
+
+  // show events matching users search
+  showSearchResult(search, res) {
+    const events = eventsService.searchEvents(search);
+    res.render('events', { events, searched: { value: search }})
   }
 
   // method to show info on the event

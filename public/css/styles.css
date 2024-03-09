@@ -37,7 +37,7 @@ button {
   background-color: #364ED0;
 }
 
-p {
+.card-text {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

@@ -6,12 +6,14 @@ const eventsController = new EventsController();
 
 router.use(express.json());
 
-router.get('/', eventsController.showAll);
+router.get('/', eventsController.showUpcoming);
 
 router.route('/new')
   .get((req, res, next) => 
     eventsController.showEditForm(req, res, next, true))
   .post(eventsController.create);
+
+router.get('/passed', eventsController.showPassed);
 
 router.route('/:id')
   .get(eventsController.showEditForm)

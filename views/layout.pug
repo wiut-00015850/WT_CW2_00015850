@@ -11,16 +11,18 @@ html
             nav
                 nav.navbar.navbar-expand-lg.navbar-light.bg-light
                     .container.d-flex
-                        a.navbar-brand(href="/") MyApp
+                        a.navbar-brand(href="/") {/ExpressEvents\}
                         ul.navbar-nav.ms-auto.d-flex.flex-row.gap-4
                             li.nav-item
-                                form.d-flex
-                                    input.form-control(type="search", placeholder="Search events", aria-label="Search")
-                                    button.btn.btn-outline-success(type="submit") Search
+                                form.d-flex(method='GET' action='/events')
+                                    input#inputSearch.form-control(type="search" placeholder="Search events" name='search' aria-label="Search")
+                                    button#btnSearch.btn.btn-outline-success(type="submit") Search
                             li.nav-item
                                 a.nav-link(href="/") Home
                             li.nav-item
-                                a.nav-link(href="/events") Events
+                                a.nav-link(href="/events") Upcoming Events
+                            li.nav-item
+                                a.nav-link(href="/events/passed") Past Events
                             li.nav-item
                                 a.nav-link(href="/events/new") Create
                             li.nav-item
@@ -28,6 +30,7 @@ html
 
         #main.container.mt-5
             block content
+    script(src='/static/js/main.js')
     
 
     

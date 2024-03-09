@@ -9,12 +9,30 @@ block content
     .alert.alert-primary The new event was created
   - else if (additionalInfo === 'updated')
     .alert.alert-warning The event was updated
-  h1.text-center Upcoming events
-  ul.mt-4.events-grid.p-0
-    each event in events
-      .card.text-secondary
-        .card-body.d-flex.flex-column
-          h5.card-title.text-dark=event.title
-          p.card-text=event.description
-          span.mt-auto.align-self-end=new Date(event.date).toLocaleString()
-          a.btn.btn-primary.mt-3(href=`/events/${event.id}`) Read more
+  h2.text-center
+    - if (searched)
+      span Showing events matching your search
+      span.fs-5.d-block.mt-2=`Your search value was: ${searched.value}`
+    - else if (passed)
+      - if (events.length > 0)
+        span=`We already organised ${events.length} events! And more to come!`
+      - else
+        span Passed events
+    - else
+      span Upcoming events
+  - if (events.length === 0)
+      .d-flex.justify-content-center.mt-5.text-dark
+        .p-4.pb-3.bg-white.rounded.d-flex.flex-column
+          p.lead The list is empty. Come back later for more information.
+          .d-flex.justify-content-center.gap-5.mt-2
+            a.nav-link.fs-6.p-0.pb-2(href="/") Go to home
+            a.nav-link.fs-6.p-0.pb-2(href="/events") View upcoming events
+  - else
+    ul.mt-4.events-grid.p-0
+      each event in events
+        .card.text-secondary
+          .card-body.d-flex.flex-column
+            h5.card-title.text-dark=event.title
+            p.card-text=event.description
+            span.mt-auto.align-self-end(class=(passed ? 'text-danger': ''))=new Date(event.date).toLocaleString()
+            a.btn.btn-primary.mt-3(href=`/events/${event.id}`) Read more

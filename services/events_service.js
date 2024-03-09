@@ -16,8 +16,21 @@ class EventsService {
     })
   }
 
-  getAll() {
-    return this.events;
+  getUpcomingEvents() {
+    return this.events.filter(event => new Date(event.date) > new Date())
+           .sort(this._sortUpcomingEvents);
+  }
+
+
+  getPassedEvents() {
+    return this.events.filter(event => new Date(event.date) < new Date())
+           .sort(this._sortPassedEvents);
+  }
+
+  searchEvents(search) {
+    // search the given string in title and description
+    return this.events.filter(event => event.title.toLowerCase().includes(search) 
+           || event.description.toLowerCase().includes(search));
   }
 
   getById(id) {
@@ -90,6 +103,28 @@ class EventsService {
             : resolve({ success: true });
       });
     });
+  }
+
+    // show events that come sooner first
+  _sortUpcomingEvents(a, b) {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    if (dateA < dateB)
+      return -1;
+    if (dateA > dateB)
+      return 1;
+    return 0;
+  }
+
+  // show recently passed events first
+  _sortPassedEvents(a, b) {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    if (dateA > dateB)
+      return -1;
+    if (dateA < dateB)
+      return 1;
+    return 0;
   }
 }
 
