@@ -1,7 +1,6 @@
 extends layout 
 
 block content
-  h1.text-center Upcoming events
   - if (additionalInfo === 'deleted')
     .alert.alert-danger The event was deleted
   - else if (additionalInfo === 'joined')
@@ -10,7 +9,12 @@ block content
     .alert.alert-primary The new event was created
   - else if (additionalInfo === 'updated')
     .alert.alert-warning The event was updated
-  ul.display-flex
-    each event in events 
-      li
-        a(href=`events/${event.id}`)=event.title
+  h1.text-center Upcoming events
+  ul.mt-4.events-grid.p-0
+    each event in events
+      .card.text-secondary
+        .card-body.d-flex.flex-column
+          h5.card-title.text-dark=event.title
+          p.card-text=event.description
+          span.mt-auto.align-self-end=new Date(event.date).toLocaleString()
+          a.btn.btn-primary.mt-3(href=`/events/${event.id}`) Read more

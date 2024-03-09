@@ -30,29 +30,31 @@ class EventsController {
   async update(req, res) {
     const { id } = req.params;
     const result = await eventsService.update(id, req.body);
-    if (result)
+    if (result.success)
       res.sendStatus(204);
     else
-      res.sendStatus(400);
+      res.status(400).json({ errorMsg: result.errorMsg });
   }
 
   // delete the form and send result status
   async delete(req, res) {
     const { id } = req.params;
     const result = await eventsService.delete(id);
-    if (result)
+    if (result.success)
       res.sendStatus(204);
     else
-      res.sendStatus(400);
+      res.status(400).json({ errorMsg: result.errorMsg });
   }
 
   // create new form and show related status
   async create(req, res) {
     const result = await eventsService.create(req.body);
-    if (result)
+    if (result.success) {
       res.sendStatus(204);
-    else
-      res.sendStatus(400);
+    }
+    else {
+      res.status(400).json({ errorMsg: result.errorMsg });
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 const id = document.getElementById('id').value;
+const DEFAULT_SERVER_ERROR = "An error on the server occured, please try again later."
 
 // delete event functionality
 document.getElementById('deleteBtn')?.addEventListener('click', function() {
@@ -23,12 +24,14 @@ document.getElementById('saveBtn').addEventListener('click', function() {
   const title = document.getElementById('title').value;
   const venue = document.getElementById('venue').value;
   const date = document.getElementById('date').value;
+  const description = document.getElementById('description').value;
   const isCreateType = document.getElementById('forCreate').value;
 
   const eventData = {
     title,
     venue,
-    date
+    date,
+    description
   };
 
   // based on the edit type send POST or PUT request
@@ -49,11 +52,14 @@ function sendCreateRequest(eventData) {
       // if the operation was successful, redirect to all events page and show created alert
       window.location.href = '/events?created';
     } else {
-      console.error("something went wrong");
+      // request failed, handle error
+      response.json().then(error => {
+        showErrorMessage(error.errorMsg);
+      });
     }
   })
   .catch(error => {
-    console.error('Error:', error);
+    showErrorMessage(DEFAULT_SERVER_ERROR);
   });
 }
 
@@ -71,10 +77,25 @@ function sendUpdateRequest(eventData) {
       // if the operation was successful, redirect to all events page and show updated alert
       window.location.href = '/events?updated';
     } else {
-      console.error("something went wrong");
+      // request failed, handle error
+      response.json().then(error => {
+        showErrorMessage(error.errorMsg);
+      });
     }
   })
   .catch(error => {
-    console.error('Error:', error);
+    showErrorMessage(DEFAULT_SERVER_ERROR);
   });
+}
+
+function showErrorMessage(message) {
+  const mainElem = document.getElementById("main");
+  const alertElem = document.createElement("div");
+  alertElem.classList = "alert alert-danger";
+  alertElem.setAttribute("role", "alert");
+  alertElem.innerText = message;
+  mainElem.insertBefore(alertElem, mainElem.firstChild);
+  setTimeout(() => {
+    mainElem.removeChild(alertElem);
+  }, 4000);
 }

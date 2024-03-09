@@ -4,6 +4,7 @@ const fs = require('fs');
 class EventsService {
   // local field that specifies path to the db
   _file_path =  './data/events.json';
+  _error_msg = '';
 
   constructor() {
     // array that represents events
@@ -27,7 +28,7 @@ class EventsService {
   async update(id, event) {
     const eventIndex = this._getEventIndex(id);
     if(eventIndex < 0 || !this._validateEvent(event))
-      return false;
+      return { success: false, errorMsg: this._error_msg };
     this.events.splice(eventIndex, 1, {id, ...event});
     return await this._updateFile();
   }
@@ -36,7 +37,7 @@ class EventsService {
   async delete(id) {
     const eventIndex = this._getEventIndex(id);
     if(eventIndex < 0)
-      return false;
+      return { success: false, erroMsg: 'Wrong id, operation failed'};
     this.events.splice(eventIndex, 1);
     return await this._updateFile();
   }
@@ -44,7 +45,7 @@ class EventsService {
   // validates and then inserts into the db
   async create(event) {
     if (!this._validateEvent(event))
-      return false;
+      return { success: false, errorMsg: this._error_msg };
     const maxId = Math.max(...this.events.map(e => e.id));
     // if there no elems maxId will return -Infinity so need to set first item to 1
     this.events.push({id: maxId < 1 ? 1 : maxId + 1, ...event});
@@ -58,10 +59,26 @@ class EventsService {
 
   // private method to validate event 
   _validateEvent(event) {
-    if (!event ||
-        !event.title || event.title.trim() === '' ||
-        !event.venue || event.venue.trim() === '')
+    if (!event) {
+      this._error_msg = 'Wrong input, please check your inputs';
       return false;
+    }
+    if (!event.title || event.title.trim() === '') {
+      this._error_msg = 'Please provide title for the event';
+      return false;
+    }
+    if (!event.venue || event.venue.trim() === '') {
+      this._error_msg = 'Event venue cannot be empty, please provide value';
+      return false;
+    }
+    if (!event.description || event.description.trim() === '') {
+      this._error_msg = 'Users need description. Please provide description';
+      return false;
+    }
+    if (!event.date || new Date(event.date) < new Date()) {
+      this._error_msg = 'Event date needs to be set to a future date';
+      return false;
+    }
     return true;
   }
 
@@ -69,7 +86,8 @@ class EventsService {
   _updateFile() {
     return new Promise((resolve, reject) => {
       fs.writeFile(this._file_path, JSON.stringify(this.events), (err) => {
-        err ? reject(false) : resolve(true);
+        err ? reject({success: false, errorMsg: 'Error occured saving your error'})
+            : resolve({ success: true });
       });
     });
   }
