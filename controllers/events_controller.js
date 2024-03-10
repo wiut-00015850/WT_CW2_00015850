@@ -1,4 +1,5 @@
 const EventsService = require('./../services/events_service');
+const AuthService = require('./../services/auth_service');
 const eventsService = new EventsService();
 
 class EventsController {
@@ -28,6 +29,7 @@ class EventsController {
 
   // method to show info on the event
   showEditForm(req, res, next, forCreate = false) {
+    const isAdmin = new AuthService().isUserAdmin(req);
     if (forCreate) // if it is to create a form, no need to search for the event
       res.render('event', {event: {}, forCreate});
     else {
@@ -36,7 +38,7 @@ class EventsController {
         res.sendStatus(404);
       else {
         const event = eventsService.getById(id);
-        event ? res.render('event', { event, forCreate })
+        event ? res.render('event', { event, forCreate, isAdmin })
         : res.sendStatus(404);
       }
     }

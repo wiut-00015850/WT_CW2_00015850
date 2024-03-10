@@ -21,3 +21,13 @@ function showErrorMessage(message) {
     mainElem.removeChild(alertElem);
   }, 4000);
 }
+
+// change Log in button to Log out if user is signed in
+document.addEventListener("DOMContentLoaded", function() {
+  const userSignedIn = document.cookie.includes('ExpressEvents_JWT');
+  if (!userSignedIn)
+    return;
+  const userAccountNav = document.getElementById('user-account');
+  userAccountNav.innerText = 'Log out';
+  userAccountNav.setAttribute('href', '/user/logout');
+});

@@ -1,7 +1,8 @@
 // a service class that will perform CRUD operations on users.json
 const fs = require('fs');  // performs file i/o operations 
 const bcrypt = require('bcrypt'); // encrypts the password
-const jwt = require('jsonwebtoken');  // needed to authorize users
+const AuthService = require('./auth_service');
+const authService = new AuthService();
 
 class UsersService {
   // local field that specifies path to the db
@@ -25,8 +26,14 @@ class UsersService {
     try {
       // hash the password and store the user in the db (json file)
       const hashedPassword = await bcrypt.hash(password, 10);
-      this.users.push({username, password: hashedPassword, isAdmin});
-      return await this._updateFile();
+      const user = {username, password: hashedPassword, isAdmin}
+      this.users.push(user);
+      const dbSaveResult = await this._updateFile();
+      if (!dbSaveResult.success)  // if there was an error saving new user
+        return dbSaveResult;
+      // if no erros, generate jwt token
+      const token = authService.generateUserToken(user);
+      return { success: true, token }
     } catch {
       return { success: false, errorMsg: 'Could not sign up, please try again later'};
     }
@@ -38,9 +45,10 @@ class UsersService {
       return { success: false, errorMsg: 'Username not found' };
     }
     try {
-      console.log(password, user.password);
-      if (await bcrypt.compare(password, user.password))
-        return { success: true };
+      if (await bcrypt.compare(password, user.password)) {
+        const token = authService.generateUserToken(user);
+        return { success: true, token };
+      }
       // if we get here, the password was incorrect
       return { success: false, errorMsg: 'Incorrect credentials' };
     } catch {
@@ -48,7 +56,7 @@ class UsersService {
     }
   }
 
-    // privae asychronous method to write to a json file
+    // private asychronous method to write to a json file
   _updateFile() {
     return new Promise((resolve, reject) => {
       fs.writeFile(this._file_path, JSON.stringify(this.users), (err) => {

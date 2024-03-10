@@ -5,7 +5,6 @@ block content
     h2 Create a new event
   - else
     h2 More info on event
-  - const isAdmin = true;
     .d-flex.gap-3.mt-3
       .text-dark.w-100
         .form-floating.mb-3
@@ -22,13 +21,13 @@ block content
           label(for='date') Event date
         input.d-none(type="checkbox" id="forCreate" disabled=true value=(forCreate ? 'true' : ''))
       .text-dark.w-100
-          textarea.form-control(rows=11 id='description' placeholder='Add detailed description here to attract more people' for="description" required)
+          textarea.form-control(rows=11 id='description' placeholder='Add detailed description here to attract more people' for="description" required readonly=isAdmin ? false : true)
             =event.description
   - if (isAdmin)
     button#saveBtn.btn.btn-primary Save
     -if (!forCreate)
       button#deleteBtn.btn.btn-danger.ms-2 Delete
   - else 
-    button.btn.btn-primary Join this event
+    a.btn.btn-primary(href='/events?joined') Join this event
 
   script(src="/static/js/event_edit.js")

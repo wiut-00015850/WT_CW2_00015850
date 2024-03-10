@@ -19,7 +19,7 @@ document.getElementById('deleteBtn')?.addEventListener('click', function() {
 });
 
 // update/create event functionality
-document.getElementById('saveBtn').addEventListener('click', function() {
+document.getElementById('saveBtn')?.addEventListener('click', function() {
   const title = document.getElementById('title').value;
   const venue = document.getElementById('venue').value;
   const date = document.getElementById('date').value;

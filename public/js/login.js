@@ -4,7 +4,6 @@ loginBtn.addEventListener('click', function(event) {
   event.preventDefault();
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
-  console.log(username, password);
 
   fetch(`/user/login`, {
     method: 'POST',
@@ -15,8 +14,7 @@ loginBtn.addEventListener('click', function(event) {
   })
   .then(response => {
     if (response.ok) {
-      // if the operation was successful, store the token and go to home page
-      console.log("token is here");
+      window.location.href = '/events';
     } else {
       // request failed, handle error
       response.json().then(error => {

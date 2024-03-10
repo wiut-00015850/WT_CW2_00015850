@@ -32,8 +32,7 @@ signupBtn.addEventListener('click', function(event) {
   })
   .then(response => {
     if (response.ok) {
-      // if the operation was successful, store the token and go to home page
-      console.log("token is here");
+      window.location.href = '/events';
     } else {
       // request failed, handle error
       response.json().then(error => {

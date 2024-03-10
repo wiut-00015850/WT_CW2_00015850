@@ -13,6 +13,8 @@ router.route('/login')
 
 router.get('/logout', usersController.logout);
 
+router.get('/unauthorized', usersController.showUnauthorized);
+
 router.route('/signup')
   .get(usersController.showSignUpPage)
   .post(usersController.signup);
