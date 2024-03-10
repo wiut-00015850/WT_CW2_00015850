@@ -13,7 +13,7 @@ class EventsService {
     fs.readFile(this._file_path, (err, data) => {
       err ? console.error("Couldn't load events data")
           : this.events = JSON.parse(data);
-    })
+    });
   }
 
   getUpcomingEvents() {
@@ -99,7 +99,7 @@ class EventsService {
   _updateFile() {
     return new Promise((resolve, reject) => {
       fs.writeFile(this._file_path, JSON.stringify(this.events), (err) => {
-        err ? reject({success: false, errorMsg: 'Error occured saving your error'})
+        err ? reject({success: false, errorMsg: 'Error occured saving your result'})
             : resolve({ success: true });
       });
     });

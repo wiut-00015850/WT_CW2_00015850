@@ -1,5 +1,4 @@
 const id = document.getElementById('id').value;
-const DEFAULT_SERVER_ERROR = "An error on the server occured, please try again later."
 
 // delete event functionality
 document.getElementById('deleteBtn')?.addEventListener('click', function() {
@@ -86,16 +85,4 @@ function sendUpdateRequest(eventData) {
   .catch(error => {
     showErrorMessage(DEFAULT_SERVER_ERROR);
   });
-}
-
-function showErrorMessage(message) {
-  const mainElem = document.getElementById("main");
-  const alertElem = document.createElement("div");
-  alertElem.classList = "alert alert-danger";
-  alertElem.setAttribute("role", "alert");
-  alertElem.innerText = message;
-  mainElem.insertBefore(alertElem, mainElem.firstChild);
-  setTimeout(() => {
-    mainElem.removeChild(alertElem);
-  }, 4000);
 }

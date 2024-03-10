@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  .col-6.m-auto
+    h2 Log in
+    .d-flex.flex-column.text-dark.bg-light.p-4.rounded.mt-3
+      form(method="POST" action="/user/login")
+        .form-floating.mb-3
+          input.form-control(id='username' name="username" placeholder='user323' required)
+          label(for='username') Username
+        .form-floating.mb-3
+          input.form-control(type='password' name="password" id='password' placeholder='mysecretcode' autocomplete='on' required)
+          label(for='password') Password
+        .d-flex.align-items-center.mt-4
+          span Don't have an account?
+            a.nav-link.p-0.pb-2.d-inline.text-primary(href="/user/signup") Sign up here
+          button#btn-login.btn.btn-primary.ms-auto(type='submit') Log in
+
+  script(src='/static/js/login.js')

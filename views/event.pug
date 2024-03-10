@@ -9,16 +9,16 @@ block content
     .d-flex.gap-3.mt-3
       .text-dark.w-100
         .form-floating.mb-3
-          input.form-control(id='id' placeholder='777' for="id" value=event.id required disabled=true)
+          input.form-control(id='id' placeholder='777' value=event.id required disabled=true)
           label(for='id') Event #
         .form-floating.mb-3
-          input.form-control(id='title' placeholder='My very cool event' for="title" value=event.title required disabled=isAdmin ? false : true)
+          input.form-control(id='title' placeholder='My very cool event' value=event.title required disabled=isAdmin ? false : true)
           label(for='title') Event title
         .form-floating.mb-3
-          input.form-control(id='venue' placeholder='Tashkent, Uzbekistan' for="venue" value=event.venue required disabled=isAdmin ? false : true)
+          input.form-control(id='venue' placeholder='Tashkent, Uzbekistan' value=event.venue required disabled=isAdmin ? false : true)
           label(for='venue') Event venue
         .form-floating.mb-3
-          input.form-control(type="datetime-local" id='date' placeholder='My very cool event' for="date" value=event.date required disabled=isAdmin ? false : true)
+          input.form-control(type="datetime-local" id='date' placeholder='My very cool event' value=event.date required disabled=isAdmin ? false : true)
           label(for='date') Event date
         input.d-none(type="checkbox" id="forCreate" disabled=true value=(forCreate ? 'true' : ''))
       .text-dark.w-100

@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .col-6.m-auto
+    h2 Sign up
+    .d-flex.flex-column.text-dark.bg-light.p-4.rounded.mt-3
+      form#signup-form(method="POST", action="/user/signup")
+        .form-floating.mb-3
+          input.form-control(id='username' name='username' placeholder='user323' required)
+          label(for='username') Username
+          span#username-error.text-danger.my-2.d-block.d-none Username cannot be empty
+        .form-floating.mb-3
+          input.form-control(type='password' name='password' id='password' placeholder='mysecretcode' autocomplete='on' required )
+          label(for='password') Password
+        .form-floating.mb-3
+          input.form-control(type='password' name='passwordConfirm' id='passwordConfirm' placeholder='mysecretcode' autocomplete='on' required)
+          label(for='passwordConfirm') Confirm password
+        .form-check
+          input.form-check-input(type='checkbox' name='isAdmin' id='isAdmin' value="admin")
+          label.form-check-label(for='isAdmin') Admin
+        .d-flex.align-items-center.mt-4
+          span Already have an account? 
+            a.nav-link.p-0.pb-2.d-inline.text-primary(href="/user/login") Log in here
+          button#btn-signup.btn.btn-primary.ms-auto(type='submit') Sign up
+  
+  script(src='/static/js/signup.js')
+
