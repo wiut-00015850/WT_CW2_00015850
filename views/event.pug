@@ -5,24 +5,24 @@ block content
     h2 Create a new event
   - else
     h2 More info on event
-    .d-flex.gap-3.mt-3
-      .text-dark.w-100
-        .form-floating.mb-3
-          input.form-control(id='id' placeholder='777' value=event.id required disabled=true)
-          label(for='id') Event #
-        .form-floating.mb-3
-          input.form-control(id='title' placeholder='My very cool event' value=event.title required disabled=isAdmin ? false : true)
-          label(for='title') Event title
-        .form-floating.mb-3
-          input.form-control(id='venue' placeholder='Tashkent, Uzbekistan' value=event.venue required disabled=isAdmin ? false : true)
-          label(for='venue') Event venue
-        .form-floating.mb-3
-          input.form-control(type="datetime-local" id='date' placeholder='My very cool event' value=event.date required disabled=isAdmin ? false : true)
-          label(for='date') Event date
-        input.d-none(type="checkbox" id="forCreate" disabled=true value=(forCreate ? 'true' : ''))
-      .text-dark.w-100
-          textarea.form-control(rows=11 id='description' placeholder='Add detailed description here to attract more people' for="description" required readonly=isAdmin ? false : true)
-            =event.description
+  .d-flex.gap-3.mt-3
+    .text-dark.w-100
+      .form-floating.mb-3
+        input.form-control(id='id' placeholder='777' value=event.id required disabled=true)
+        label(for='id') Event #
+      .form-floating.mb-3
+        input.form-control(id='title' placeholder='My very cool event' value=event.title required disabled=isAdmin ? false : true)
+        label(for='title') Event title
+      .form-floating.mb-3
+        input.form-control(id='venue' placeholder='Tashkent, Uzbekistan' value=event.venue required disabled=isAdmin ? false : true)
+        label(for='venue') Event venue
+      .form-floating.mb-3
+        input.form-control(type="datetime-local" id='date' placeholder='My very cool event' value=event.date required disabled=isAdmin ? false : true)
+        label(for='date') Event date
+      input.d-none(type="checkbox" id="forCreate" disabled=true value=(forCreate ? 'true' : ''))
+    .text-dark.w-100
+        textarea.form-control(rows=11 id='description' placeholder='Add detailed description here to attract more people' for="description" required readonly=isAdmin ? false : true)
+          =event.description
   - if (isAdmin)
     button#saveBtn.btn.btn-primary Save
     -if (!forCreate)

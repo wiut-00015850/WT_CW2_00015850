@@ -31,7 +31,7 @@ class EventsController {
   showEditForm(req, res, next, forCreate = false) {
     const isAdmin = new AuthService().isUserAdmin(req);
     if (forCreate) // if it is to create a form, no need to search for the event
-      res.render('event', {event: {}, forCreate});
+      res.render('event', { event: {}, forCreate, isAdmin });
     else {
       const { id } = req.params;
       if (!id) // id is invalid or was not passed
