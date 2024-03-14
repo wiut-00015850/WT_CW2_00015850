@@ -1,10 +1,11 @@
 // a service class that will perform CRUD operations on events.json
 const fs = require('fs');
+const EventValidator = require('../validators/event_validator');
+const eventValidator = new EventValidator();
 
 class EventsService {
   // local field that specifies path to the db
   _file_path =  './data/events.json';
-  _error_msg = '';
 
   constructor() {
     // array that represents events
@@ -40,8 +41,11 @@ class EventsService {
   // validaties and then writes to the db
   async update(id, event) {
     const eventIndex = this._getEventIndex(id);
-    if(eventIndex < 0 || !this._validateEvent(event))
-      return { success: false, errorMsg: this._error_msg };
+    if(eventIndex < 0)
+      return { success: false, errorMsg: `The event with id ${id} does not exist` };
+    const validationResult = eventValidator.validateEvent(event);
+    if (!validationResult.success)  // if the event did not pass validation
+      return validationResult;
     this.events.splice(eventIndex, 1, {id, ...event});
     return await this._updateFile();
   }
@@ -57,8 +61,9 @@ class EventsService {
 
   // validates and then inserts into the db
   async create(event) {
-    if (!this._validateEvent(event))
-      return { success: false, errorMsg: this._error_msg };
+    const validationResult = eventValidator.validateEvent(event);
+    if (!validationResult.success)  // if the event did not pass validation
+      return validationResult;
     const maxId = Math.max(...this.events.map(e => e.id));
     // if there no elems maxId will return -Infinity so need to set first item to 1
     this.events.push({id: maxId < 1 ? 1 : maxId + 1, ...event});
@@ -68,31 +73,6 @@ class EventsService {
   // private method to get index of the event
   _getEventIndex(id) {
     return this.events.findIndex(event => event.id == id);
-  }
-
-  // private method to validate event 
-  _validateEvent(event) {
-    if (!event) {
-      this._error_msg = 'Wrong input, please check your inputs';
-      return false;
-    }
-    if (!event.title || event.title.trim() === '') {
-      this._error_msg = 'Please provide title for the event';
-      return false;
-    }
-    if (!event.venue || event.venue.trim() === '') {
-      this._error_msg = 'Event venue cannot be empty, please provide value';
-      return false;
-    }
-    if (!event.description || event.description.trim() === '') {
-      this._error_msg = 'Users need description. Please provide description';
-      return false;
-    }
-    if (!event.date || new Date(event.date) < new Date()) {
-      this._error_msg = 'Event date needs to be set to a future date';
-      return false;
-    }
-    return true;
   }
 
   // privae asychronous method to write to a json file

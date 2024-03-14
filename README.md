@@ -49,6 +49,7 @@ The project files are structured as follows:
 - `controllers/`: Directory that contains the logic of endpoints.
 - `views/`: Directory containing Pug templates for rendering HTML views.
 - `public/`: Directory for static files (e.g., stylesheet and JavaScript files).
+- `validators/`: Directory that contains the logic of entities validation.
 - `.env`: Configuration file for environment variables.
 - `package.json`: File containing metadata about the project and its dependencies.
 - `README.md`: Document containing project information i.e. this file.

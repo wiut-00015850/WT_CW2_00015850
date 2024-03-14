@@ -3,6 +3,8 @@ const fs = require('fs');  // performs file i/o operations
 const bcrypt = require('bcrypt'); // encrypts the password
 const AuthService = require('./auth_service');
 const authService = new AuthService();
+const UserValidator = require('./../validators/user_validator');
+const userValidator = new UserValidator();
 
 class UsersService {
   // local field that specifies path to the db
@@ -18,10 +20,11 @@ class UsersService {
   }
 
   async signup(username, password, isAdmin) {
-    if (username.trim() === '' || password === '')
-      return { success: false, errorMsg: 'Username and password cannot be empty'};
-    if (this.users.some(user => user.username.toLowerCase() === username.toLowerCase()))
-      return { success: false, errorMsg: `This username ${username.toLowerCase()} is already taken` };
+    const validationResult = userValidator.validateUser(username, password);
+    if (!validationResult.success)  // if user sign up data did not pass validation
+      return validationResult;
+    if (this.users.some(user => user.username.toLowerCase() === username.toLowerCase()))  // if username was already taken before
+      return { success: false, errorMsg: `The username ${username.toLowerCase()} is already taken` };
 
     try {
       // hash the password and store the user in the db (json file)
